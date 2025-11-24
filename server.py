@@ -14,5 +14,12 @@ def gpio_start(token):
     subprocess.Popen([sys.executable, "/app/scripts/gpio/start.py"]) # Use system python3
     return "OK\n"
 
+@app.route("/gpio_force_stop/<token>", methods=["POST"])
+def gpio_force_stop(token):
+    if token != SECRET:
+        abort(401)
+    subprocess.Popen([sys.executable, "/app/scripts/gpio/force_stop.py"]) # Use system python3
+    return "OK\n"
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
