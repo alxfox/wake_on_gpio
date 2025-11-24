@@ -1,0 +1,17 @@
+services:
+  wake-on-gpio:
+    build: .
+    container_name: custom-services
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./server.py:/app/server.py
+      - ./scripts/:/app/scripts
+    devices:
+      - /dev/gpiochip0:/dev/gpiochip0 # required for gpio access
+    working_dir: /app
+    command: >
+      sh -c "python3 server.py"
+    ports:
+      - "5454:5000"   # exposed for Homepage
