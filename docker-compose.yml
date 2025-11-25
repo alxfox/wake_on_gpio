@@ -1,7 +1,8 @@
 services:
   wake-on-gpio:
     build: .
-    container_name: custom-services
+    image: wake-on-gpio:latest
+    container_name: wake-on-gpio
     restart: unless-stopped
     env_file:
       - .env
