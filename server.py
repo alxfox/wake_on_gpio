@@ -1,4 +1,4 @@
-from flask import Flask, abort
+from flask import Flask, abort, request
 import os
 import subprocess
 import sys
@@ -7,15 +7,17 @@ app = Flask(__name__)
 
 SECRET = os.environ.get("SECRET_TOKEN")
 
-@app.route("/gpio_start/<token>", methods=["POST"])
-def gpio_start(token):
+@app.route("/gpio_start", methods=["POST"])
+def gpio_start():
+    token = request.headers.get("X-Auth-Token")
     if token != SECRET:
         abort(401)
     subprocess.Popen([sys.executable, "/app/scripts/gpio/start.py"]) # Use system python3
     return "OK\n"
 
-@app.route("/gpio_force_stop/<token>", methods=["POST"])
-def gpio_force_stop(token):
+@app.route("/gpio_force_stop", methods=["POST"])
+def gpio_force_stop():
+    token = request.headers.get("X-Auth-Token")
     if token != SECRET:
         abort(401)
     subprocess.Popen([sys.executable, "/app/scripts/gpio/force_stop.py"]) # Use system python3

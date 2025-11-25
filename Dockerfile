@@ -1,10 +1,11 @@
-FROM debian:latest
+FROM python:3.10-slim
 
 # Install Python and libgpiod for gpio control
-RUN apt-get update \
-    && apt-get install -y python3 python3-pip python3-libgpiod python3-flask \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+COPY ./requirements.txt requirements.txt
+
+RUN pip3 install --no-cache-dir -r requirements.txt
+
+RUN rm requirements.txt
 
 WORKDIR /app
 
