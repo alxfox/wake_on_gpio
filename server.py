@@ -1,9 +1,10 @@
-from flask import Flask, abort, request
+from flask_cors import CORS
 import os
 import subprocess
 import sys
 
 app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": "http://192.168.2.9"}})
 
 SECRET = os.environ.get("SECRET_TOKEN")
 
