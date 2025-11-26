@@ -48,7 +48,8 @@ Docker is required. The project uses a Debian container that includes all depend
 
 Copy the provided `example.env` to `.env` and set your own token:
 
-```
+
+```.env
 SECRET_TOKEN=MY_TOKEN_ABCDE
 ```
 
@@ -56,7 +57,7 @@ SECRET_TOKEN=MY_TOKEN_ABCDE
 
 If your system uses a different GPIO chip, ensure that the Docker Compose file maps the correct device. Adjust the devices section accordingly:
 
-```
+```docker-compose.yml
 devices:
   - /dev/gpiochip0:/dev/gpiochip0
 ```
@@ -68,7 +69,7 @@ Then, adapt `./scripts/gpio/start.py`:
 
 Example file:
 
-```
+```./scripts/gpio/start.py
 import gpiod
 import time
 from gpiod.line import Direction, Value
@@ -92,7 +93,7 @@ with gpiod.request_lines(
 
 Copy `start.py` to a new location in scripts  (e.g. `my_command.py`) and modify timing or signal behavior there. Then add a corresponding route in `server.py`:
 
-```
+```server.py
 @app.route("/gpio_my_command/<token>", methods=["POST"])
 def gpio_my_command(token):
     if token != SECRET:
@@ -103,24 +104,24 @@ def gpio_my_command(token):
 
 ### 4. Build the Docker image
 
-```
+```sh
 docker compose build
 ```
 
 ### 5. Start the service
 
-```
+```sh
 docker compose up -d
 ```
 
 To deactivate:
 
-```
+```sh
 docker compose down
 ```
 
 ### 6. Test using a curl request (replace the IP address with that of the host machine running the container)
 
-```
+```sh
 curl -X POST http://192.168.x.x:5454/gpio_start/<token>
 ```
